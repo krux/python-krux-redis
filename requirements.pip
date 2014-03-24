@@ -1,5 +1,5 @@
 # Krux' python repo
 --extra-index-url https://staticfiles.krxd.net/foss/pypi/
 
-redis
-krux-stdlib
+redis==2.9.1
+krux-stdlib==0.8.0
