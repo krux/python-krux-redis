@@ -1,0 +1,5 @@
+# Krux' python repo
+--extra-index-url https://staticfiles.krxd.net/foss/pypi/
+
+redis
+krux-stdlib
