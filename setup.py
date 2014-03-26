@@ -16,7 +16,7 @@ import os
 
 
 # We use the version to construct the DOWNLOAD_URL.
-VERSION      = '0.0.1'
+VERSION      = '0.0.3'
 
 # URL to the repository on Github.
 REPO_URL     = 'https://github.com/krux/python-krux-redis'

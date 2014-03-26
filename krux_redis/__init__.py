@@ -15,7 +15,7 @@ import redis
 
 from krux.logging     import get_logger, LEVELS
 from krux.stats       import get_stats
-from krux.cli         import get_parser, get_group
+from krux.cli         import get_parser, get_group, Application
 
 #########################
 # Constants
@@ -189,21 +189,47 @@ class RedisInstance(object):
             self.connection.ping()
             return self.connection
 
-        except redis.ConnectionError, e:
+        except redis.RedisError, e:
             log.warning('Redis: Could not connect to %s: %s', self.name, e)
             stats.incr('redis.instance.error.connection')
             return None
 
+class TestApplication(Application):
+
+    def __init__(self):
+        ### Call to the superclass to bootstrap.
+        super(TestApplication, self).__init__(name = 'krux-redis')
+
+        ### get all the redis configuration from the CLI
+        self.redis  = Redis(
+                        parser = self.parser,
+                        logger = self.logger,
+                        stats  = self.stats,
+                      )
+        self.redis.from_cli()
+
+    def add_cli_arguments(self, parser):
+
+        ### we use redis, but via CLI arguments.
+        add_redis_cli_arguments(parser)
+
 def main():
+    app     = TestApplication()
+    log     = app.logger
+    master  = app.redis.get_master()
+    slave   = app.redis.get_slave()
 
+    if master:
+        log.info('Connected to master %s', master)
+        log.info('Ping master: %s', master.ping())
+    else:
+        log.warning('Could not connect to master')
 
-    u = 'redis://foo@localhost:6999/0'
-    r = Redis()
-    i = r.from_url(u)
-    i.connect()
-
-    pprint([r, i])
-
+    if slave:
+        log.info('Connected to master %s', slave)
+        log.info('Ping slave: %s', slave.ping())
+    else:
+        log.warning('Could not connect to slave')
 
 ### Run the application stand alone
 if __name__ == '__main__':
