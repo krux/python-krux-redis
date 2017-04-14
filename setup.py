@@ -1,41 +1,37 @@
 # -*- coding: utf-8 -*-
 #
-# © 2014 Krux Digital, Inc.
+# © 2017 Krux, A Salesforce Company
 #
-"""
-Package setup for krux-redis
-"""
-######################
-# Standard Libraries #
-######################
 from __future__ import absolute_import
 from setuptools import setup, find_packages
-
 import os
+import sys
+from krux_redis import __version__
 
 
-# We use the version to construct the DOWNLOAD_URL.
-VERSION      = '0.0.3'
-
-# URL to the repository on Github.
-REPO_URL     = 'https://github.com/krux/python-krux-redis'
-# Github will generate a tarball as long as you tag your releases, so don't
-# forget to tag!
-DOWNLOAD_URL = ''.join((REPO_URL, '/tarball/release/', VERSION))
+# subprocess32 is required by krux-stdlib, but breaks builds on
+# python3, so we append it to the requirements and do *not* specify
+# the version in requirements.pip.
+REQUIREMENTS = ['krux-stdlib']
+if os.name == 'posix' and sys.version_info[0] < 3:
+    # For Python 2.*, install the backported subprocess
+    REQUIREMENTS.append('subprocess32')
 
 
 setup(
-    name             = 'krux-redis',
-    version          = VERSION,
-    author           = 'Jos Boumans',
-    author_email     = 'jos@krux.com',
-    description      = 'Library to wrap redsi.py for writers & multiple readers',
-    url              = REPO_URL,
-    download_url     = DOWNLOAD_URL,
-    license          = 'All Rights Reserved.',
-    packages         = find_packages(),
-    install_requires = [
-        'redis',
-        'krux-stdlib',
-    ],
+    name='krux-redis',
+    version=__version__,
+    author='Jos Boumans',
+    author_email='jos@krux.com',
+    maintainer='Paul Lathrop',
+    maintainer_email='plathrop@salesforce.com',
+    description='Standard libraries and tools for Sentinel clusters at Krux.',
+    long_description="""
+    Standard libraries and tools for interacting with Redis Sentinel
+    clusters at Krux.
+    """,
+    url='https://github.com/krux/python-krux-redis',
+    license='All Rights Reserved.',
+    packages=find_packages(),
+    install_requires=REQUIREMENTS,
 )
