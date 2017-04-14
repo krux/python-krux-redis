@@ -34,4 +34,9 @@ setup(
     license='All Rights Reserved.',
     packages=find_packages(),
     install_requires=REQUIREMENTS,
+    entry_points={
+        'console_scripts': [
+            'krux-redis-test = krux_redis:main',
+        ]
+    }
 )
