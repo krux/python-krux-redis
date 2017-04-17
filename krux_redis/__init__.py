@@ -14,7 +14,7 @@ __version__ = '0.1.0'
 # Krux Standard Libararies #
 ############################
 from krux.cli import Application
-from krux_redis.client import Redis
+from krux_redis.redis_client import Redis
 
 
 # @plathrop 2017.04.14: For API backwards-compatibility we import
@@ -25,7 +25,7 @@ from krux_redis.client import Redis
 # Since these are intended, we supress flake8 checks via the noqa
 # tags; F401 is the unused import check.
 from krux_redis.cli import add_redis_cli_arguments, DEFAULT_TIMEOUT # noqa:F401
-from krux_redis.client import RedisInstance # noqa:F401
+from krux_redis.redis_instance import RedisInstance # noqa:F401
 
 
 # Deprecated, see comment above
