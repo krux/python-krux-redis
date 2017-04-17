@@ -12,6 +12,8 @@ DEFAULT_TIMEOUT = 0.5   # in seconds
 
 
 # Designed to be called from krux.cli, or programs inheriting from it
+#
+# TODO: Potentially refactor this. See: https://git.io/vSFYS
 def add_redis_cli_arguments(parser):
 
     group = get_group(parser, 'redis')
