@@ -36,7 +36,7 @@ setup(
     install_requires=REQUIREMENTS,
     entry_points={
         'console_scripts': [
-            'krux-redis-test = krux_redis:main',
+            'krux-redis-test = krux_redis.redis_client:main',
         ]
     }
 )
