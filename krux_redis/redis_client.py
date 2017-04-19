@@ -14,10 +14,11 @@ import random
 ############################
 # Krux Standard Libararies #
 ############################
+from krux.cli import Application, get_parser
 from krux.logging import get_logger
 from krux.stats import get_stats
-from krux.cli import get_parser
 from krux_redis.redis_instance import RedisInstance
+from krux_redis.cli import add_redis_cli_arguments
 
 
 class Redis(object):
@@ -114,3 +115,47 @@ class Redis(object):
             log.debug('Redis: No slaves found - returning master')
             stats.incr('redis.error.no_slave')
             return self.get_master()
+
+
+class TestApplication(Application):
+
+    def __init__(self):
+        # Call to the superclass to bootstrap.
+        super(TestApplication, self).__init__(name='krux-redis')
+
+        # get all the redis configuration from the CLI
+        self.redis = Redis(
+            parser=self.parser,
+            logger=self.logger,
+            stats=self.stats,
+        )
+        self.redis.from_cli()
+
+    def add_cli_arguments(self, parser):
+
+        # we use redis, but via CLI arguments.
+        add_redis_cli_arguments(parser)
+
+
+def main():
+    app = TestApplication()
+    log = app.logger
+    master = app.redis.get_master()
+    slave = app.redis.get_slave()
+
+    if master:
+        log.info('Connected to master %s', master)
+        log.info('Ping master: %s', master.ping())
+    else:
+        log.warning('Could not connect to master')
+
+    if slave:
+        log.info('Connected to master %s', slave)
+        log.info('Ping slave: %s', slave.ping())
+    else:
+        log.warning('Could not connect to slave')
+
+
+# Run the application stand alone
+if __name__ == '__main__':
+    main()
