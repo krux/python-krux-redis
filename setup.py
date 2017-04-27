@@ -37,6 +37,7 @@ setup(
     entry_points={
         'console_scripts': [
             'krux-redis-test = krux_redis.redis_client:main',
+            'krux-sentinel-test = krux_redis.sentinel:main',
         ]
     }
 )
