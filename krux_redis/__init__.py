@@ -8,7 +8,7 @@ from __future__ import absolute_import
 
 # PEP-8 says module-level "dunders" (double-underscore vars) like this
 # one should go before imports (but after the absolute_import line).
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 # @plathrop 2017.04.14: For API backwards-compatibility we import
 # things which were refactored into separate modules and provide some
