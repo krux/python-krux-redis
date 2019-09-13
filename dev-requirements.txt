@@ -1,5 +1,5 @@
 # Include base requirements
--r requirements.pip
+-r requirements.txt
 
 # Useful tools
 ipython==5.3.0
